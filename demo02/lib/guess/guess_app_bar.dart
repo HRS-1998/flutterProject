@@ -53,6 +53,9 @@ class GuessAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
+  // 自定义高度：PreferredSizeWidget 接口要求实现 preferredSize 属性，用于指定组件的首选大小。这对于 AppBar 来说非常重要，因为 Scaffold 需要知道 AppBar 的高度以便正确布局其他子组件（如 body）。
+  // 布局一致性：通过实现 PreferredSizeWidget，可以确保 AppBar 的高度在整个应用中保持一致，避免布局错乱或不一致的问题。
+
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight); // 实现 preferredSize
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight); // 实现 preferredSize,
 }
