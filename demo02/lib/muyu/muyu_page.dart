@@ -1,7 +1,9 @@
+import 'package:demo02/muyu/models/history_option.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:demo02/muyu/muyu_count_panel.dart';
 import 'package:demo02/muyu/muyu_image.dart';
+import 'package:demo02/muyu/muyu_history.dart';
 import 'package:demo02/muyu/muyu_animate_text.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:demo02/muyu/models/image_option.dart';
@@ -9,6 +11,8 @@ import 'package:demo02/muyu/models/audio_option.dart';
 import 'package:demo02/muyu/options/select_image.dart';
 import 'package:demo02/muyu/options/select_audio.dart';
 import 'dart:math';
+
+import 'package:uuid/uuid.dart';
 
 class MuyuPage extends StatefulWidget {
   final String title;
@@ -21,10 +25,12 @@ class _MuyuPageState extends State<MuyuPage> {
   int _count = 0;
   int _curValue = 0;
   final _random = Random();
+  final Uuid uuid = Uuid();
   final List<ImageOption> imageOptions = [
     ImageOption("基础版", "assets/images/aa.png", 1, 3),
     ImageOption("尊享版", "assets/images/bb.png", 3, 6),
   ];
+  final List<HistoryItem> _historyItems = [];
   int _activeImageIndex = 0;
   int _activeAudioIndex = 0;
   final List<AudioOption> _audioOptions = [
@@ -40,6 +46,18 @@ class _MuyuPageState extends State<MuyuPage> {
       _curValue = knockValue; // 随机数
       _count += _curValue;
     });
+    // 将记录加到历史记录中
+    String id = uuid.v4();
+    _historyItems.insert(
+      0,
+      HistoryItem(
+        id,
+        _curValue,
+        _audioOptions[_activeAudioIndex].name,
+        DateTime.now().millisecondsSinceEpoch,
+        activeImage,
+      ),
+    );
   }
 
   void _onTapSwitchAudio() {
@@ -118,7 +136,7 @@ class _MuyuPageState extends State<MuyuPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
+        elevation: 0, // 去掉阴影
         backgroundColor: Colors.white,
         title: Text(widget.title),
         titleTextStyle: const TextStyle(
@@ -149,7 +167,7 @@ class _MuyuPageState extends State<MuyuPage> {
               alignment: Alignment.topCenter,
               children: [
                 MuyuImage(imageUrl: activeImage, onTap: _onkonck),
-                if (_curValue != 0) AnimateText(text: '数值+$_curValue'),
+                if (_curValue != 0) AnimateText(record: _historyItems[0]),
               ],
             ),
           ),
@@ -158,7 +176,17 @@ class _MuyuPageState extends State<MuyuPage> {
     );
   }
 
-  void _toHistory() {}
+  void _toHistory() {
+    // 跳转到history页面
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) =>
+                HistoryPage(title: '历史记录', historyItems: _historyItems),
+      ),
+    );
+  }
 
   // Widget _buildTopContent() {
   //   // 按钮样式

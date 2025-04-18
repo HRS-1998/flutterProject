@@ -32,7 +32,9 @@ class CountPanel extends StatelessWidget {
           right: 10,
           top: 10,
           child: Wrap(
+            // 间距
             spacing: 8,
+            // 垂直方向
             direction: Axis.vertical,
             children: [
               ElevatedButton(
