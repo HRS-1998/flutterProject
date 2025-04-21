@@ -1,0 +1,56 @@
+import 'package:demo02/guess/guess_page.dart';
+import 'package:demo02/main/app_bottom_bar.dart';
+import 'package:demo02/main/main_model.dart';
+import 'package:demo02/muyu/muyu_page.dart';
+import 'package:demo02/paper/paper_page.dart';
+import 'package:flutter/material.dart';
+
+class AppNavigation extends StatefulWidget {
+  const AppNavigation({super.key});
+
+  @override
+  State<AppNavigation> createState() => _AppNavigationState();
+}
+
+class _AppNavigationState extends State<AppNavigation> {
+  int _currentIndex = 0;
+
+  final List<MenuData> menus = const [
+    MenuData(label: '猜数字', icon: Icons.question_mark),
+    MenuData(label: '点赞', icon: Icons.my_library_music_outlined),
+    MenuData(label: '白板绘制', icon: Icons.palette_outlined),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(child: _buildContent(_currentIndex)),
+        AppBottomBar(
+          currentIndex: _currentIndex,
+          menus: menus,
+          onItemTap: _onItemTap,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContent(int index) {
+    switch (index) {
+      case 0:
+        return const GuessPage(title: '猜数字');
+      case 1:
+        return const MuyuPage(title: "点赞");
+      case 2:
+        return const PaperPage(title: "画板绘制");
+      default:
+        return SizedBox.shrink();
+    }
+  }
+
+  void _onItemTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+}
