@@ -23,32 +23,53 @@ class _AppNavigationState extends State<AppNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    // return Column(
+    //   children: [
+    //     Expanded(child: _buildContent(_currentIndex)),
+    //     AppBottomBar(
+    //       currentIndex: _currentIndex,
+    //       menus: menus,
+    //       onItemTap: _onItemTap,
+    //     ),
+    //   ],
+    // );
+    //解决guess界面遮盖问题
+    return Scaffold(
+      body: _buildContent(_currentIndex),
+      bottomNavigationBar: AppBottomBar(
+        currentIndex: _currentIndex,
+        menus: menus,
+        onItemTap: _onItemTap,
+      ),
+    );
+  }
+
+  final PageController _pageController = PageController();
+
+  Widget _buildContent(int index) {
+    // switch (index) {
+    //   case 0:
+    //     return const GuessPage(title: '猜数字');
+    //   case 1:
+    //     return const MuyuPage(title: "点赞");
+    //   case 2:
+    //     return const PaperPage(title: "画板绘制");
+    //   default:
+    //     return SizedBox.shrink();
+    // }
+    return PageView(
+      physics: const NeverScrollableScrollPhysics(),
+      controller: _pageController,
       children: [
-        Expanded(child: _buildContent(_currentIndex)),
-        AppBottomBar(
-          currentIndex: _currentIndex,
-          menus: menus,
-          onItemTap: _onItemTap,
-        ),
+        const GuessPage(title: '猜数字'),
+        const MuyuPage(title: "点赞"),
+        const PaperPage(title: "画板绘制"),
       ],
     );
   }
 
-  Widget _buildContent(int index) {
-    switch (index) {
-      case 0:
-        return const GuessPage(title: '猜数字');
-      case 1:
-        return const MuyuPage(title: "点赞");
-      case 2:
-        return const PaperPage(title: "画板绘制");
-      default:
-        return SizedBox.shrink();
-    }
-  }
-
   void _onItemTap(int index) {
+    _pageController.jumpToPage(index);
     setState(() {
       _currentIndex = index;
     });

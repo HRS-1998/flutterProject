@@ -14,7 +14,9 @@ class PaperPage extends StatefulWidget {
   State<PaperPage> createState() => _PaperPageState();
 }
 
-class _PaperPageState extends State<PaperPage> {
+// 页面缓存
+class _PaperPageState extends State<PaperPage>
+    with AutomaticKeepAliveClientMixin {
   final List<Line> _lines = [];
   final List<Line> _historyLines = [];
   int _activeColorIndex = 0;
@@ -61,7 +63,11 @@ class _PaperPageState extends State<PaperPage> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: PaperAppbar(
         title: widget.title,
