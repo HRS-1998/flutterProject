@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 // import 'package:demo02/paper/paper_page.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized(); // 确保平台通道正确初始化
   runApp(const MyApp());
 }
 

@@ -1,5 +1,6 @@
 import 'package:demo02/guess/guess_app_bar.dart';
-import 'package:demo02/guess/result_notice_01.dart';
+import 'package:demo02/guess/result_notice.dart';
+import 'package:demo02/storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -12,7 +13,26 @@ class GuessPage extends StatefulWidget {
   State<GuessPage> createState() => _GuessPageState();
 }
 
-class _GuessPageState extends State<GuessPage> {
+class _GuessPageState extends State<GuessPage>
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  late AnimationController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    _initConfig();
+  }
+
+  void _initConfig() async {
+    var config = await SpStorage.instance.readGuessConfig();
+    _guessing = config['guessing'] ?? false;
+    _value = config['value'] ?? 0;
+    setState(() {});
+  }
+
   int _value = 0;
   bool _guessing = false;
   bool? _isBig;
@@ -23,6 +43,7 @@ class _GuessPageState extends State<GuessPage> {
     setState(() {
       _guessing = true;
       _value = _random.nextInt(100);
+      SpStorage.instance.saveGuessConfig(guessing: _guessing, value: _value);
       // _guessing = false;
     });
   }
@@ -36,11 +57,13 @@ class _GuessPageState extends State<GuessPage> {
     if (!_guessing || guessValue == null) {
       return;
     }
+    _controller.forward(from: 0);
     // 猜对了
     if (guessValue == _value) {
       setState(() {
         _isBig = null;
         _guessing = false;
+        SpStorage.instance.saveGuessConfig(guessing: false, value: _value);
       });
       return;
     }
@@ -57,6 +80,9 @@ class _GuessPageState extends State<GuessPage> {
     _guesscontroller.dispose();
     super.dispose();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {

@@ -34,9 +34,9 @@ class _MuyuPageState extends State<MuyuPage> {
   int _activeImageIndex = 0;
   int _activeAudioIndex = 0;
   final List<AudioOption> _audioOptions = [
-    AudioOption('muyu_1', 'assets/audio/muyu_1.mp3'),
-    AudioOption('muyu_2', 'assets/audio/muyu_2.mp3'),
-    AudioOption('muyu_3', 'assets/audio/muyu_3.mp3'),
+    AudioOption('muyu_1', 'muyu_1.mp3'),
+    AudioOption('muyu_2', 'muyu_2.mp3'),
+    AudioOption('muyu_3', 'muyu_3.mp3'),
   ];
   AudioPool? pool;
   // MuyuAssetsImage(image:activeImage,onTap:_onkonck),

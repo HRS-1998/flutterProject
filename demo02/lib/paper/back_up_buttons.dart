@@ -12,7 +12,7 @@ class BackUpButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const BoxConstraints cts = BoxConstraints(maxHeight: 24, maxWidth: 24);
+    // const BoxConstraints cts = BoxConstraints(maxHeight: 24, maxWidth: 24);
     Color backColor = onBack == null ? Colors.grey : Colors.black;
     Color revocationColor = onRevocation == null ? Colors.grey : Colors.black;
 
